@@ -1,0 +1,59 @@
+﻿<Window x:Class="Memory_Game.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Memory_Game"
+        mc:Ignorable="d"
+        Title="Memory Game - Login" Height="500" Width="800" Background="#2C3E50">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Memory Game" FontSize="26" FontWeight="Bold" Foreground="White"
+                   HorizontalAlignment="Center" Margin="0,20,0,10"/>
+
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Lista utilizatorilor -->
+            <ListBox x:Name="UserListBox" Grid.Column="0" Background="#34495E" Foreground="White"
+                     ItemsSource="{Binding Users}" DisplayMemberPath="Name"
+                     SelectedItem="{Binding SelectedUser, Mode=TwoWay}"/>
+
+            <!-- Imaginea utilizatorului selectat -->
+            <Border Grid.Column="1" BorderBrush="White" BorderThickness="2" CornerRadius="10" Padding="5">
+                <Grid>
+                    <Image Width="180" Height="180" Source="{Binding SelectedUser.ImagePath}"
+                           Stretch="UniformToFill"/>
+
+
+
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Button Content="&#x00AB;" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40"
+        Background="#2980B9" Foreground="White" FontWeight="Bold" Command="{Binding NavigateLeftCommand}" Margin="616,339,0,0" Grid.RowSpan="2" Grid.Row="1"/>
+        <Button Content="&#x00BB;" HorizontalAlignment="Right" VerticalAlignment="Top" Width="40" Height="40"
+        Background="#2980B9" Foreground="White" FontWeight="Bold" Command="{Binding NavigateRightCommand}" Margin="0,339,72,0" Grid.RowSpan="2" Grid.Row="1"/>
+        <!-- Butoane -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10,0,10">
+            <Button Content="Create User" Width="120" Height="40" Margin="10" Background="#2980B9" Foreground="White"
+            FontWeight="Bold" Command="{Binding CreateUserCommand}"/>
+            <Button Content="Delete User" Width="120" Height="40" Margin="10" Background="#E74C3C" Foreground="White"
+            FontWeight="Bold" Command="{Binding DeleteUserCommand}" IsEnabled="{Binding IsUserSelected}"/>
+            <Button Content="Play" Width="120" Height="40" Margin="10" Background="#27AE60" Foreground="White"
+            FontWeight="Bold" Command="{Binding PlayCommand}" IsEnabled="{Binding IsUserSelected}"/>
+            <Button Content="Cancel" Width="120" Height="40" Margin="10" Background="#95A5A6" Foreground="White"
+            FontWeight="Bold" Command="{Binding CancelCommand}"/>
+
+        </StackPanel>
+    </Grid>
+</Window>

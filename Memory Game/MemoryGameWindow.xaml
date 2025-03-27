@@ -1,0 +1,34 @@
+﻿<Window x:Class="Memory_Game.MemoryGameWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Memory Game" Height="700" Width="900" Background="#2C3E50">
+    
+    
+    <Grid>
+        <TextBlock Text="{Binding TimerText}" 
+                   FontSize="24" 
+                   Foreground="White" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Top" 
+                   Margin="10"/>
+
+        <ItemsControl ItemsSource="{Binding Cards}" Margin="0,50,0,0">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="4"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Command="{Binding DataContext.CardSelectedCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding}"
+                            Margin="5">
+                        <Button.Content>
+                            <Image Width="120" Height="120" Source="{Binding DisplayImage}" />
+                        </Button.Content>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</Window>

@@ -1,0 +1,18 @@
+﻿<Window x:Class="Memory_Game.MenuWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Memory Game" Height="600" Width="800" Background="#2C3E50">
+    <Grid>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Content="Category" Width="220" Height="50" Command="{Binding CategoryCommand}" FontSize="16" FontWeight="Bold"/>
+            <Button Content="New Game" Width="220" Height="50" Command="{Binding NewGameCommand}" FontSize="16" FontWeight="Bold"/>
+            <Button Content="Open Game" Width="220" Height="50" Command="{Binding OpenGameCommand}" FontSize="16" FontWeight="Bold"/>
+            <Button Content="Save Game" Width="220" Height="50" Command="{Binding SaveGameCommand}" FontSize="16" FontWeight="Bold"/>
+            <Button Content="Statistics" Width="220" Height="50" Command="{Binding StatisticsCommand}" FontSize="16" FontWeight="Bold"/>
+            <Button Content="Standard (4x4)" Width="220" Height="50" Command="{Binding StandardGameCommand}" FontSize="16" FontWeight="Bold"/>
+            <Button Content="Custom..." Width="220" Height="50" Command="{Binding CustomGameCommand}" FontSize="16" FontWeight="Bold"/>
+            <Button Content="About" Width="220" Height="50" Command="{Binding AboutCommand}" FontSize="16" FontWeight="Bold"/>
+            <Button Content="Exit" Width="220" Height="50" Command="{Binding ExitCommand}" FontSize="16" FontWeight="Bold"/>
+        </StackPanel>
+    </Grid>
+</Window>
