@@ -9,6 +9,7 @@ namespace Memory_Game
         private string selectedGameMode;
         private int selectedRows;
         private int selectedColumns;
+        private string username;
 
         public ICommand CategoryCommand { get; }
         public ICommand NewGameCommand { get; }
@@ -20,7 +21,7 @@ namespace Memory_Game
         public ICommand AboutCommand { get; }
         public ICommand ExitCommand { get; }
 
-        public MenuWindowViewModel()
+        public MenuWindowViewModel(string username)
         {
             CategoryCommand = new RelayCommand(OpenCategorySelection);
             NewGameCommand = new RelayCommand(StartNewGame);
@@ -31,6 +32,7 @@ namespace Memory_Game
             CustomGameCommand = new RelayCommand(SelectCustomGame);
             AboutCommand = new RelayCommand(ShowAboutInfo);
             ExitCommand = new RelayCommand(ExitApplication);
+            this.username = username;
         }
 
         private void OpenCategorySelection()
@@ -101,8 +103,9 @@ namespace Memory_Game
             MessageBox.Show($"The game will start with:\nCategory: '{selectedCategory}'\nMode: '{selectedGameMode}'\nBoard size: {selectedRows}x{selectedColumns}\nTime limit: {timeLimit} seconds.",
                 "Starting Game", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            MemoryGameWindow memoryGameWindow = new MemoryGameWindow(timeLimit, selectedCategory, selectedRows, selectedColumns);
+            MemoryGameWindow memoryGameWindow = new MemoryGameWindow(username,timeLimit, selectedCategory, selectedRows, selectedColumns);
             memoryGameWindow.Show();
+            MessageBox.Show($"Hello {username}");
         }
 
         private void OpenSavedGame()

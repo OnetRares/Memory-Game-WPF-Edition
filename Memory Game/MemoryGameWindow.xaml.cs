@@ -18,10 +18,10 @@ namespace Memory_Game
     public partial class MemoryGameWindow : Window
     {
 
-        public MemoryGameWindow(int timeLimitInSeconds,string selectedCategory, int selectedRows, int selectedColumns)
+        public MemoryGameWindow(string username,int timeLimitInSeconds,string selectedCategory, int selectedRows, int selectedColumns)
         {
             InitializeComponent();
-            DataContext = new MemoryGameViewModel(timeLimitInSeconds, selectedCategory, selectedRows, selectedColumns); 
+            DataContext = new MemoryGameViewModel(username,timeLimitInSeconds, selectedCategory, selectedRows, selectedColumns); 
         }
     }
 }

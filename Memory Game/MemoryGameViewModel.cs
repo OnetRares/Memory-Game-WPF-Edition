@@ -19,6 +19,7 @@ namespace Memory_Game
         private string _category;
         private int _rows;
         private int _columns;
+        private string _username;
 
         public ObservableCollection<CardModel> Cards { get; set; }
         public ICommand CardSelectedCommand { get; }
@@ -28,13 +29,14 @@ namespace Memory_Game
         public int Columns => _columns;
 
        
-        public MemoryGameViewModel(int timeLimitInSeconds, string category, int rows, int columns)
+        public MemoryGameViewModel(string username,int timeLimitInSeconds, string category, int rows, int columns)
         {
             _timeLimit = timeLimitInSeconds;
             _category = category;
             _rows = rows;
             _columns = columns;
             Cards = new ObservableCollection<CardModel>();
+            _username = username;
 
            
             CardSelectedCommand = new RelayCommand<CardModel>(async card => await OnCardSelected(card),
@@ -139,7 +141,7 @@ namespace Memory_Game
             if (Cards.All(c => c.IsMatched))
             {
                 _timer.Stop();
-                MessageBox.Show($"Felicitări! Ai terminat jocul în {TimerText}", "Joc Terminat", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Felicitări {_username} ! Ai terminat jocul în {TimerText}", "Joc Terminat", MessageBoxButton.OK, MessageBoxImage.Information);
                 Application.Current.Shutdown();
             }
         }

@@ -82,7 +82,7 @@ namespace Memory_Game
 
         private void ExecutePlay()
         {
-            MenuWindow menuWindow = new MenuWindow();
+            MenuWindow menuWindow = new MenuWindow(SelectedUser.Name);
             menuWindow.Show();
         }
 

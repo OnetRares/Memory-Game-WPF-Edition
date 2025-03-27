@@ -17,10 +17,10 @@ namespace Memory_Game
 
     public partial class MenuWindow : Window
     {
-        public MenuWindow()
+        public MenuWindow(string username)
         {
             InitializeComponent();
-            DataContext = new MenuWindowViewModel();
+            DataContext = new MenuWindowViewModel(username);
         }
     }
 }
