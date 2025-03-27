@@ -14,6 +14,8 @@ namespace Memory_Game
             public string FilePath { get; set; }
         }
 
+        public string SelectedFile { get; private set; }
+
         public List<SavedGameItem> SavedGames { get; set; }
 
         private string _username;
@@ -36,17 +38,9 @@ namespace Memory_Game
         {
             if (SavedGamesList.SelectedItem is SavedGameItem selectedItem)
             {
-                try
-                {
-                    GameState state = GameStateStorage.LoadGame(selectedItem.FilePath);
-                    MemoryGameWindow gameWindow = new MemoryGameWindow(state);
-                    gameWindow.Show();
-                    this.Close();
-                }
-                catch (System.Exception ex)
-                {
-                    MessageBox.Show($"Eroare la încărcarea jocului: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                SelectedFile = selectedItem.FilePath;
+                this.DialogResult = true;
+                this.Close();
             }
         }
     }

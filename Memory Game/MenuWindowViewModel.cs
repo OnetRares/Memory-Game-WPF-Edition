@@ -116,14 +116,21 @@ namespace Memory_Game
         private void OpenSavedGame()
         {
             SavedGameWindow savedGamesWindow = new SavedGameWindow(username);
-            savedGamesWindow.Show();
+            if (savedGamesWindow.ShowDialog() == true && !string.IsNullOrEmpty(savedGamesWindow.SelectedFile))
+            {
+                GameState loadedState = GameStateStorage.LoadGame(savedGamesWindow.SelectedFile);
+                currentGameViewModel = new MemoryGameViewModel(loadedState);
+                MemoryGameWindow memoryGameWindow = new MemoryGameWindow(currentGameViewModel);
+                memoryGameWindow.Show();
+            }
         }
+       
 
         private void SaveCurrentGame()
         {
             if (currentGameViewModel == null)
             {
-                MessageBox.Show("Nu există niciun joc în derulare de salvat.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("There is no game in progress to save..", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -131,11 +138,11 @@ namespace Memory_Game
             try
             {
                 GameStateStorage.SaveGame(state);
-                MessageBox.Show("Jocul a fost salvat cu succes.", "Save Game", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Game saved successfully.", "Save Game", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Eroare la salvare: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error saving: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private void ShowStatistics()

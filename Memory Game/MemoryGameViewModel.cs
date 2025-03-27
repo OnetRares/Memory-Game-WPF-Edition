@@ -85,7 +85,7 @@ namespace Memory_Game
                 if (_secondsElapsed >= _timeLimit)
                 {
                     _timer.Stop();
-                    MessageBox.Show("Timpul a expirat! Ai pierdut jocul.", "Game Over", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Time is up! You lost the game..", "Game Over", MessageBoxButton.OK, MessageBoxImage.Warning);
                     Application.Current.Shutdown();
                 }
             };
@@ -99,7 +99,7 @@ namespace Memory_Game
             string imagesFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", _category);
             if (!Directory.Exists(imagesFolder))
             {
-                throw new DirectoryNotFoundException($"Folderul {imagesFolder} nu a fost găsit.");
+                throw new DirectoryNotFoundException($"Folder {imagesFolder} not found.");
             }
 
            
@@ -108,7 +108,7 @@ namespace Memory_Game
             var imageFiles = Directory.GetFiles(imagesFolder, "*.jpg");
             if (imageFiles.Length < pairs)
             {
-                throw new Exception($"Nu există suficiente imagini în categoria '{_category}'. Sunt necesare cel puțin {pairs} imagini.");
+                throw new Exception($"There are not enough images in category '{_category}'. At least {pairs} images are required..");
             }
 
             var selectedImages = imageFiles.Take(pairs).ToList();
@@ -189,7 +189,7 @@ namespace Memory_Game
             if (Cards.All(c => c.IsMatched))
             {
                 _timer.Stop();
-                MessageBox.Show($"Felicitări {_username} ! Ai terminat jocul în {TimerText}", "Joc Terminat", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Congratulations {_username} ! You finished the game in {TimerText}", "Game Over", MessageBoxButton.OK, MessageBoxImage.Information);
                 Application.Current.Shutdown();
             }
         }
