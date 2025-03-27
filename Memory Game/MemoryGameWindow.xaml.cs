@@ -17,11 +17,27 @@ namespace Memory_Game
 
     public partial class MemoryGameWindow : Window
     {
+        private MemoryGameViewModel viewModel;
 
-        public MemoryGameWindow(string username,int timeLimitInSeconds,string selectedCategory, int selectedRows, int selectedColumns)
+        
+        public MemoryGameWindow(string username, int timeLimit, string category, int rows, int columns)
         {
             InitializeComponent();
-            DataContext = new MemoryGameViewModel(username,timeLimitInSeconds, selectedCategory, selectedRows, selectedColumns); 
+            viewModel = new MemoryGameViewModel(username, timeLimit, category, rows, columns);
+            DataContext = viewModel;
+        }
+
+        
+        public MemoryGameWindow(GameState state)
+        {
+            InitializeComponent();
+            viewModel = new MemoryGameViewModel(state);
+            DataContext = viewModel;
+        }
+        public MemoryGameWindow(MemoryGameViewModel viewModel)
+        {
+            InitializeComponent();
+            DataContext = viewModel;
         }
     }
 }

@@ -46,7 +46,34 @@ namespace Memory_Game
             StartTimer();
         }
 
-       
+        public MemoryGameViewModel(GameState state)
+        {
+            _username = state.Username;
+            _timeLimit = state.TimeRemaining + _secondsElapsed;
+            _category = state.Category;
+            _rows = state.Rows;
+            _columns = state.Columns;
+            _secondsElapsed = _timeLimit - state.TimeRemaining;
+
+            Cards = new ObservableCollection<CardModel>();
+
+         
+            foreach (var cardState in state.Cards)
+            {
+                Cards.Add(new CardModel
+                {
+                    ImagePath = cardState.ImagePath,
+                    IsRevealed = cardState.IsRevealed,
+                    IsMatched = cardState.IsMatched
+                });
+            }
+
+            CardSelectedCommand = new RelayCommand<CardModel>(async card => await OnCardSelected(card),
+                                                                card => !_isProcessing && !card.IsMatched && !card.IsRevealed);
+
+            StartTimer();
+        }
+
         private void StartTimer()
         {
             _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
@@ -104,7 +131,28 @@ namespace Memory_Game
                 Cards.Add(card);
         }
 
-    
+        public GameState GetCurrentGameState()
+        {
+            var state = new GameState
+            {
+                Username = _username,
+                Category = _category,
+                GameMode = "Custom", 
+                Rows = _rows,
+                Columns = _columns,
+                TimeRemaining = _timeLimit - _secondsElapsed,
+                Cards = Cards.Select(card => new CardState
+                {
+                    ImagePath = card.ImagePath,
+                    IsRevealed = card.IsRevealed,
+                    IsMatched = card.IsMatched
+                }).ToList()
+            };
+            return state;
+        }
+
+
+
         private async Task OnCardSelected(CardModel selectedCard)
         {
             if (_isProcessing)

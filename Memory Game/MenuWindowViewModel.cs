@@ -11,6 +11,8 @@ namespace Memory_Game
         private int selectedColumns;
         private string username;
 
+        private MemoryGameViewModel currentGameViewModel;
+
         public ICommand CategoryCommand { get; }
         public ICommand NewGameCommand { get; }
         public ICommand OpenGameCommand { get; }
@@ -88,7 +90,7 @@ namespace Memory_Game
                 return;
             }
 
-            int timeLimit = 60; 
+            int timeLimit = 60;
             string input = Microsoft.VisualBasic.Interaction.InputBox("Enter the game time limit (in seconds):", "Time Limit", "60");
 
             if (int.TryParse(input, out int parsedTimeLimit) && parsedTimeLimit > 0)
@@ -103,21 +105,39 @@ namespace Memory_Game
             MessageBox.Show($"The game will start with:\nCategory: '{selectedCategory}'\nMode: '{selectedGameMode}'\nBoard size: {selectedRows}x{selectedColumns}\nTime limit: {timeLimit} seconds.",
                 "Starting Game", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            MemoryGameWindow memoryGameWindow = new MemoryGameWindow(username,timeLimit, selectedCategory, selectedRows, selectedColumns);
+            currentGameViewModel = new MemoryGameViewModel(username, timeLimit, selectedCategory, selectedRows, selectedColumns);
+
+            MemoryGameWindow memoryGameWindow = new MemoryGameWindow(currentGameViewModel);
             memoryGameWindow.Show();
+
             MessageBox.Show($"Hello {username}");
         }
 
         private void OpenSavedGame()
         {
-            MessageBox.Show("Opening saved game...", "Open Game", MessageBoxButton.OK, MessageBoxImage.Information);
+            SavedGameWindow savedGamesWindow = new SavedGameWindow(username);
+            savedGamesWindow.Show();
         }
 
         private void SaveCurrentGame()
         {
-            MessageBox.Show("Game saved successfully.", "Save Game", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
+            if (currentGameViewModel == null)
+            {
+                MessageBox.Show("Nu există niciun joc în derulare de salvat.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
+            var state = currentGameViewModel.GetCurrentGameState();
+            try
+            {
+                GameStateStorage.SaveGame(state);
+                MessageBox.Show("Jocul a fost salvat cu succes.", "Save Game", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Eroare la salvare: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         private void ShowStatistics()
         {
             MessageBox.Show("Showing game statistics...", "Statistics", MessageBoxButton.OK, MessageBoxImage.Information);
