@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Memory_Game.Model;
+using Memory_Game.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,7 +30,7 @@ namespace Memory_Game
         }
 
         
-        public MemoryGameWindow(GameState state)
+        public MemoryGameWindow(GameStateModel state)
         {
             InitializeComponent();
             viewModel = new MemoryGameViewModel(state);

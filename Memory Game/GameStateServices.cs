@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Memory_Game.Model;
 using Newtonsoft.Json;
 
 namespace Memory_Game
 {
-    public static class GameStateStorage
+    public static class GameStateServices
     {
         private static string GetUserSaveFolder(string username)
         {
@@ -21,7 +22,7 @@ namespace Memory_Game
             return savedGamesFolder;
         }
 
-        public static void SaveGame(GameState state)
+        public static void SaveGame(GameStateModel state)
         {
             string folder = GetUserSaveFolder(state.Username);
             string filename = $"Game_{DateTime.Now:yyyyMMdd_HHmmss}.json";
@@ -44,10 +45,10 @@ namespace Memory_Game
             return new List<string>();
         }
 
-        public static GameState LoadGame(string filePath)
+        public static GameStateModel LoadGame(string filePath)
         {
             string json = File.ReadAllText(filePath);
-            return JsonConvert.DeserializeObject<GameState>(json);
+            return JsonConvert.DeserializeObject<GameStateModel>(json);
         }
     }
 }

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Memory_Game.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Memory_Game
+namespace Memory_Game.Model
 {
         public class CardModel:BaseViewModel
         {
@@ -20,7 +21,7 @@ namespace Memory_Game
             public string BackImagePath { get; set; } = "Images/back.jpg";
 
           
-            public string DisplayImage => (IsRevealed || IsMatched) ? ImagePath : BackImagePath;
+            public string DisplayImage => IsRevealed || IsMatched ? ImagePath : BackImagePath;
         }
     }
 

@@ -22,12 +22,10 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Lista utilizatorilor -->
             <ListBox x:Name="UserListBox" Grid.Column="0" Background="#34495E" Foreground="White"
                      ItemsSource="{Binding Users}" DisplayMemberPath="Name"
                      SelectedItem="{Binding SelectedUser, Mode=TwoWay}"/>
 
-            <!-- Imaginea utilizatorului selectat -->
             <Border Grid.Column="1" BorderBrush="White" BorderThickness="2" CornerRadius="10" Padding="5">
                 <Grid>
                     <Image Width="180" Height="180" Source="{Binding SelectedUser.ImagePath}"
@@ -43,7 +41,7 @@
         Background="#2980B9" Foreground="White" FontWeight="Bold" Command="{Binding NavigateLeftCommand}" Margin="616,339,0,0" Grid.RowSpan="2" Grid.Row="1"/>
         <Button Content="&#x00BB;" HorizontalAlignment="Right" VerticalAlignment="Top" Width="40" Height="40"
         Background="#2980B9" Foreground="White" FontWeight="Bold" Command="{Binding NavigateRightCommand}" Margin="0,339,72,0" Grid.RowSpan="2" Grid.Row="1"/>
-        <!-- Butoane -->
+        
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10,0,10">
             <Button Content="Create User" Width="120" Height="40" Margin="10" Background="#2980B9" Foreground="White"
             FontWeight="Bold" Command="{Binding CreateUserCommand}"/>

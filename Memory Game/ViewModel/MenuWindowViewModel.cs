@@ -1,7 +1,8 @@
-﻿using System.Windows;
+﻿using Memory_Game.Model;
+using System.Windows;
 using System.Windows.Input;
 
-namespace Memory_Game
+namespace Memory_Game.ViewModel
 {
     public class MenuWindowViewModel:BaseViewModel
     {
@@ -69,7 +70,7 @@ namespace Memory_Game
                 int.TryParse(inputCols, out int cols) &&
                 rows >= 2 && rows <= 6 &&
                 cols >= 2 && cols <= 6 &&
-                (rows * cols) % 2 == 0)
+                rows * cols % 2 == 0)
             {
                 selectedRows = rows;
                 selectedColumns = cols;
@@ -115,16 +116,28 @@ namespace Memory_Game
 
         private void OpenSavedGame()
         {
-            SavedGameWindow savedGamesWindow = new SavedGameWindow(username);
-            if (savedGamesWindow.ShowDialog() == true && !string.IsNullOrEmpty(savedGamesWindow.SelectedFile))
+            var savedGameViewModel = new SavedGameViewModel(username);
+            SavedGameWindow savedGamesWindow = new SavedGameWindow(username)
             {
-                GameState loadedState = GameStateStorage.LoadGame(savedGamesWindow.SelectedFile);
+                DataContext = savedGameViewModel
+            };
+
+            savedGameViewModel.OnGameLoaded += (sender, filePath) =>
+            {
+                savedGamesWindow.DialogResult = true;
+                savedGamesWindow.Close();
+            };
+
+            if (savedGamesWindow.ShowDialog() == true && !string.IsNullOrEmpty(savedGameViewModel.SelectedFile))
+            {
+                GameStateModel loadedState = GameStateServices.LoadGame(savedGameViewModel.SelectedFile);
                 currentGameViewModel = new MemoryGameViewModel(loadedState);
                 MemoryGameWindow memoryGameWindow = new MemoryGameWindow(currentGameViewModel);
                 memoryGameWindow.Show();
             }
         }
-       
+
+
 
         private void SaveCurrentGame()
         {
@@ -137,7 +150,7 @@ namespace Memory_Game
             var state = currentGameViewModel.GetCurrentGameState();
             try
             {
-                GameStateStorage.SaveGame(state);
+                GameStateServices.SaveGame(state);
                 MessageBox.Show("Game saved successfully.", "Save Game", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)

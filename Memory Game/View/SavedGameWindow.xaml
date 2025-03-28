@@ -1,0 +1,39 @@
+﻿<Window x:Class="Memory_Game.SavedGameWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Saved Games" Height="500" Width="600"
+        Background="#2C3E50" Foreground="White"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Saved Games" FontSize="24" FontWeight="Bold"
+                   Foreground="White" HorizontalAlignment="Center" Margin="0,10,0,10"/>
+
+        <Border Grid.Row="1" BorderBrush="#34495E" BorderThickness="2" CornerRadius="5"
+                Background="#1A252F" Padding="5">
+            <ListBox ItemsSource="{Binding SavedGames}" 
+                     SelectedItem="{Binding SelectedGame, Mode=TwoWay}"
+                     DisplayMemberPath="Filename"
+                     Background="#2C3E50" Foreground="White"
+                     BorderThickness="0" Padding="5"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+        </Border>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Button Content="Load Game" Command="{Binding LoadGameCommand}"
+                    Width="120" Height="40" FontSize="14"
+                    Background="#27AE60" Foreground="White"
+                    BorderThickness="0" Cursor="Hand"
+                    Margin="5" Padding="5"/>
+
+            
+        </StackPanel>
+    </Grid>
+</Window>

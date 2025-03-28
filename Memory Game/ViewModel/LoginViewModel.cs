@@ -7,8 +7,9 @@ using System.Linq;
 using System.Windows.Input;
 using System.IO;
 using System.Windows;
+using Memory_Game.Model;
 
-namespace Memory_Game
+namespace Memory_Game.ViewModel
 {
     public class LoginViewModel : BaseViewModel
     {

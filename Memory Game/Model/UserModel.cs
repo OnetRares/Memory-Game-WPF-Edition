@@ -1,6 +1,7 @@
-﻿using System.ComponentModel;
+﻿using Memory_Game.ViewModel;
+using System.ComponentModel;
 
-namespace Memory_Game
+namespace Memory_Game.Model
 {
     public class UserModel : BaseViewModel
     {

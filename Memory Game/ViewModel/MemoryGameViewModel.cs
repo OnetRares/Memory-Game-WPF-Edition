@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Memory_Game.Model;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace Memory_Game
+namespace Memory_Game.ViewModel
 {
     public class MemoryGameViewModel : BaseViewModel
     {
@@ -23,7 +24,10 @@ namespace Memory_Game
 
         public ObservableCollection<CardModel> Cards { get; set; }
         public ICommand CardSelectedCommand { get; }
-       
+        public int Rows => _rows;
+
+
+
         public string TimerText => $"Time: {(_timeLimit - _secondsElapsed) / 60:D2}:{(_timeLimit - _secondsElapsed) % 60:D2}";
        
         public int Columns => _columns;
@@ -46,7 +50,7 @@ namespace Memory_Game
             StartTimer();
         }
 
-        public MemoryGameViewModel(GameState state)
+        public MemoryGameViewModel(GameStateModel state)
         {
             _username = state.Username;
             _timeLimit = state.TimeRemaining + _secondsElapsed;
@@ -103,7 +107,7 @@ namespace Memory_Game
             }
 
            
-            int pairs = (_rows * _columns) / 2;
+            int pairs = _rows * _columns / 2;
 
             var imageFiles = Directory.GetFiles(imagesFolder, "*.jpg");
             if (imageFiles.Length < pairs)
@@ -131,9 +135,9 @@ namespace Memory_Game
                 Cards.Add(card);
         }
 
-        public GameState GetCurrentGameState()
+        public GameStateModel GetCurrentGameState()
         {
-            var state = new GameState
+            var state = new GameStateModel
             {
                 Username = _username,
                 Category = _category,
