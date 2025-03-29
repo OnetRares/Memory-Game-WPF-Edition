@@ -33,8 +33,12 @@ namespace Memory_Game.ViewModel
         public ICommand DeleteUserCommand { get; }
         public ICommand CreateUserCommand { get; }
 
+        public ICommand ExitCommand { get; }
+
         public ICommand NavigateLeftCommand { get; }
         public ICommand NavigateRightCommand { get; }
+
+        
 
         public LoginViewModel()
         {
@@ -43,10 +47,16 @@ namespace Memory_Game.ViewModel
             PlayCommand = new RelayCommand(ExecutePlay, () => IsUserSelected);
             DeleteUserCommand = new RelayCommand(ExecuteDeleteUser, () => IsUserSelected);
             CreateUserCommand = new RelayCommand(ExecuteCreateUser);
+            ExitCommand = new RelayCommand(ExecuteExit);
             NavigateLeftCommand = new RelayCommand(ExecuteNavigateLeft, () => Users.Count > 1);
             NavigateRightCommand = new RelayCommand(ExecuteNavigateRight, () => Users.Count > 1);
+
         }
 
+        private void ExecuteExit()
+        {
+            Application.Current.Shutdown();
+        }
         private void ExecuteNavigateLeft()
         {
             int currentIndex = Users.IndexOf(SelectedUser);
@@ -88,13 +98,26 @@ namespace Memory_Game.ViewModel
         }
 
         private void ExecuteDeleteUser()
+{
+        if (SelectedUser != null)
         {
-            if (SelectedUser != null)
+         string userFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MemoryGame", SelectedUser.Name);
+        Users.Remove(SelectedUser);
+        SaveUsers();
+
+        if (Directory.Exists(userFolderPath))
+         {
+            try
             {
-                Users.Remove(SelectedUser);
-                SaveUsers();
+                Directory.Delete(userFolderPath, true);
             }
-        }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Eroare la ștergerea folderului utilizatorului: {ex.Message}");
+            }
+         }
+    }
+}
 
         private void ExecuteCreateUser()
         {

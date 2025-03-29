@@ -8,6 +8,7 @@ namespace Memory_Game.Model
         private string _name;
         private string _imagePath;
 
+
         public string Name
         {
             get => _name;

@@ -49,8 +49,8 @@
             FontWeight="Bold" Command="{Binding DeleteUserCommand}" IsEnabled="{Binding IsUserSelected}"/>
             <Button Content="Play" Width="120" Height="40" Margin="10" Background="#27AE60" Foreground="White"
             FontWeight="Bold" Command="{Binding PlayCommand}" IsEnabled="{Binding IsUserSelected}"/>
-            <Button Content="Cancel" Width="120" Height="40" Margin="10" Background="#95A5A6" Foreground="White"
-            FontWeight="Bold" Command="{Binding CancelCommand}"/>
+            <Button Content="Exit" Width="120" Height="40" Margin="10" Background="#95A5A6" Foreground="White"
+            FontWeight="Bold" Command="{Binding ExitCommand}"/>
 
         </StackPanel>
     </Grid>
