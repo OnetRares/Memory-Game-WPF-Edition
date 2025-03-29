@@ -13,7 +13,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Memory Game" FontSize="26" FontWeight="Bold" Foreground="White"
+        <TextBlock Text="Welcome, Enjoy this game!" FontSize="26" FontWeight="Bold" Foreground="White"
                    HorizontalAlignment="Center" Margin="0,20,0,10"/>
 
         <Grid Grid.Row="1" Margin="20">

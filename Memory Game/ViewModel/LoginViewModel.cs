@@ -95,29 +95,34 @@ namespace Memory_Game.ViewModel
         {
             MenuWindow menuWindow = new MenuWindow(SelectedUser.Name);
             menuWindow.Show();
+            Application.Current.Windows.OfType<MainWindow>().FirstOrDefault()?.Close();
         }
 
         private void ExecuteDeleteUser()
-{
-        if (SelectedUser != null)
         {
-         string userFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MemoryGame", SelectedUser.Name);
-        Users.Remove(SelectedUser);
-        SaveUsers();
+            if (SelectedUser != null)
+            {
+                PlayerStatisticsService.DeleteUserStatistics(SelectedUser.Name);
+                string userFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MemoryGame", SelectedUser.Name);
 
-        if (Directory.Exists(userFolderPath))
-         {
-            try
-            {
-                Directory.Delete(userFolderPath, true);
+                Users.Remove(SelectedUser);
+                SaveUsers();
+
+                if (Directory.Exists(userFolderPath))
+                {
+                    try
+                    {
+                        Directory.Delete(userFolderPath, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error deleting user folder: {ex.Message}");
+                    }
+                }
+
+                
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Eroare la ștergerea folderului utilizatorului: {ex.Message}");
-            }
-         }
-    }
-}
+        }
 
         private void ExecuteCreateUser()
         {

@@ -89,8 +89,10 @@ namespace Memory_Game.ViewModel
                 if (_secondsElapsed >= _timeLimit)
                 {
                     _timer.Stop();
+                    PlayerStatisticsService.UpdateStatistics(_username, won: false);
                     MessageBox.Show("Time is up! You lost the game..", "Game Over", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    Application.Current.Shutdown();
+                    Application.Current.Windows.OfType<MemoryGameWindow>().FirstOrDefault()?.Close();
+
                 }
             };
             _timer.Start();
@@ -193,8 +195,9 @@ namespace Memory_Game.ViewModel
             if (Cards.All(c => c.IsMatched))
             {
                 _timer.Stop();
+                PlayerStatisticsService.UpdateStatistics(_username, won: true);
                 MessageBox.Show($"Congratulations {_username} ! You finished the game in {TimerText}", "Game Over", MessageBoxButton.OK, MessageBoxImage.Information);
-                Application.Current.Shutdown();
+                Application.Current.Windows.OfType<MemoryGameWindow>().FirstOrDefault()?.Close();
             }
         }
     }

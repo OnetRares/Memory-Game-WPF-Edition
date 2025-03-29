@@ -12,6 +12,8 @@ namespace Memory_Game.ViewModel
         private int selectedColumns;
         private string username;
 
+        public string WelcomeMessage => $"Hello {username}";
+
         private MemoryGameViewModel currentGameViewModel;
 
         public ICommand CategoryCommand { get; }
@@ -36,6 +38,8 @@ namespace Memory_Game.ViewModel
             AboutCommand = new RelayCommand(ShowAboutInfo);
             ExitCommand = new RelayCommand(ExitApplication);
             this.username = username;
+
+            OnPropertyChanged(nameof(WelcomeMessage));
         }
 
         private void OpenCategorySelection()
@@ -110,8 +114,6 @@ namespace Memory_Game.ViewModel
 
             MemoryGameWindow memoryGameWindow = new MemoryGameWindow(currentGameViewModel);
             memoryGameWindow.Show();
-
-            MessageBox.Show($"Hello {username}");
         }
 
         private void OpenSavedGame()
@@ -160,7 +162,8 @@ namespace Memory_Game.ViewModel
         }
         private void ShowStatistics()
         {
-            MessageBox.Show("Showing game statistics...", "Statistics", MessageBoxButton.OK, MessageBoxImage.Information);
+           StatisticsWindow statisticsWindow = new StatisticsWindow();
+            statisticsWindow.Show();
         }
 
         private void ShowAboutInfo()
