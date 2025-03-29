@@ -26,10 +26,6 @@ Continue from where you left off 🔄: Upon reopening the game, you can select a
 
 # 🔧 Installation
 Clone the repository:
-
-bash
-Copy
-Edit
 git clone https://github.com/username/memory-game-wpf.git
 Open the solution in Visual Studio. 💻
 
