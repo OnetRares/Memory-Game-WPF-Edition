@@ -168,7 +168,7 @@ namespace Memory_Game.ViewModel
 
         private void ShowAboutInfo()
         {
-            MessageBox.Show("Memory Game\nDeveloper: Your Name\nEmail: your.email@domain.com\nGroup: XYZ\nSpecialization: ABC", "About", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Memory Game\nDeveloper: Onet Rares-Nicolae\nEmail: rares.onet@student.com\nGroup: 10LF233\nSpecialization: Computer Science", "About", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ExitApplication()
