@@ -24,7 +24,9 @@ namespace Memory_Game.ViewModel
         public ICommand StandardGameCommand { get; }
         public ICommand CustomGameCommand { get; }
         public ICommand AboutCommand { get; }
+        public ICommand BackToLoginCommand {  get; }
         public ICommand ExitCommand { get; }
+
 
         public MenuWindowViewModel(string username)
         {
@@ -36,11 +38,13 @@ namespace Memory_Game.ViewModel
             StandardGameCommand = new RelayCommand(SelectStandardGame);
             CustomGameCommand = new RelayCommand(SelectCustomGame);
             AboutCommand = new RelayCommand(ShowAboutInfo);
+            BackToLoginCommand = new RelayCommand(BackToLogin);
             ExitCommand = new RelayCommand(ExitApplication);
             this.username = username;
 
             OnPropertyChanged(nameof(WelcomeMessage));
         }
+
 
         private void OpenCategorySelection()
         {
@@ -54,6 +58,91 @@ namespace Memory_Game.ViewModel
             {
                 MessageBox.Show("You must select a category.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+
+        private void StartNewGame()
+        {
+            if (string.IsNullOrEmpty(selectedCategory) || string.IsNullOrEmpty(selectedGameMode))
+            {
+                MessageBox.Show("Please select an image category and game mode (Standard or Custom) before starting.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            int timeLimit = 60;
+            string input = Microsoft.VisualBasic.Interaction.InputBox("Enter the game time limit (in seconds):", "Time Limit", "60");
+
+            if (int.TryParse(input, out int parsedTimeLimit) && parsedTimeLimit > 0)
+            {
+                timeLimit = parsedTimeLimit;
+            }
+            else
+            {
+                MessageBox.Show("The entered time is not valid. The game will start with the default time limit of 60 seconds.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            MessageBox.Show($"The game will start with:\nCategory: '{selectedCategory}'\nMode: '{selectedGameMode}'\nBoard size: {selectedRows}x{selectedColumns}\nTime limit: {timeLimit} seconds.",
+                "Starting Game", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            currentGameViewModel = new MemoryGameViewModel(username, timeLimit, selectedCategory, selectedRows, selectedColumns);
+            MemoryGameWindow memoryGameWindow = new MemoryGameWindow(currentGameViewModel);
+
+            memoryGameWindow.Closed += (s, e) => currentGameViewModel.StopTimer();
+
+            memoryGameWindow.Show();
+        }
+
+
+        private void OpenSavedGame()
+        {
+            var savedGameViewModel = new SavedGameViewModel(username);
+            SavedGameWindow savedGamesWindow = new SavedGameWindow(username)
+            {
+                DataContext = savedGameViewModel
+            };
+
+            savedGameViewModel.OnGameLoaded += (sender, filePath) =>
+            {
+                savedGamesWindow.DialogResult = true;
+                savedGamesWindow.Close();
+            };
+
+            if (savedGamesWindow.ShowDialog() == true && !string.IsNullOrEmpty(savedGameViewModel.SelectedFile))
+            {
+                GameStateModel loadedState = GameStateServices.LoadGame(savedGameViewModel.SelectedFile);
+                currentGameViewModel = new MemoryGameViewModel(loadedState);
+
+                MemoryGameWindow memoryGameWindow = new MemoryGameWindow(currentGameViewModel);
+                memoryGameWindow.Closed += (s, e) => currentGameViewModel.StopTimer();
+                memoryGameWindow.Show();
+            }
+        }
+
+
+
+        private void SaveCurrentGame()
+        {
+            if (currentGameViewModel == null)
+            {
+                MessageBox.Show("There is no game in progress to save..", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var state = currentGameViewModel.GetCurrentGameState();
+            try
+            {
+                GameStateServices.SaveGame(state);
+                MessageBox.Show("Game saved successfully.", "Save Game", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void ShowStatistics()
+        {
+           StatisticsWindow statisticsWindow = new StatisticsWindow();
+            statisticsWindow.Show();
         }
 
         private void SelectStandardGame()
@@ -86,94 +175,22 @@ namespace Memory_Game.ViewModel
                 selectedGameMode = null;
             }
         }
-
-        private void StartNewGame()
-        {
-            if (string.IsNullOrEmpty(selectedCategory) || string.IsNullOrEmpty(selectedGameMode))
-            {
-                MessageBox.Show("Please select an image category and game mode (Standard or Custom) before starting.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            int timeLimit = 60;
-            string input = Microsoft.VisualBasic.Interaction.InputBox("Enter the game time limit (in seconds):", "Time Limit", "60");
-
-            if (int.TryParse(input, out int parsedTimeLimit) && parsedTimeLimit > 0)
-            {
-                timeLimit = parsedTimeLimit;
-            }
-            else
-            {
-                MessageBox.Show("The entered time is not valid. The game will start with the default time limit of 60 seconds.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            MessageBox.Show($"The game will start with:\nCategory: '{selectedCategory}'\nMode: '{selectedGameMode}'\nBoard size: {selectedRows}x{selectedColumns}\nTime limit: {timeLimit} seconds.",
-                "Starting Game", MessageBoxButton.OK, MessageBoxImage.Information);
-
-            currentGameViewModel = new MemoryGameViewModel(username, timeLimit, selectedCategory, selectedRows, selectedColumns);
-
-            MemoryGameWindow memoryGameWindow = new MemoryGameWindow(currentGameViewModel);
-            memoryGameWindow.Show();
-        }
-
-        private void OpenSavedGame()
-        {
-            var savedGameViewModel = new SavedGameViewModel(username);
-            SavedGameWindow savedGamesWindow = new SavedGameWindow(username)
-            {
-                DataContext = savedGameViewModel
-            };
-
-            savedGameViewModel.OnGameLoaded += (sender, filePath) =>
-            {
-                savedGamesWindow.DialogResult = true;
-                savedGamesWindow.Close();
-            };
-
-            if (savedGamesWindow.ShowDialog() == true && !string.IsNullOrEmpty(savedGameViewModel.SelectedFile))
-            {
-                GameStateModel loadedState = GameStateServices.LoadGame(savedGameViewModel.SelectedFile);
-                currentGameViewModel = new MemoryGameViewModel(loadedState);
-                MemoryGameWindow memoryGameWindow = new MemoryGameWindow(currentGameViewModel);
-                memoryGameWindow.Show();
-            }
-        }
-
-
-
-        private void SaveCurrentGame()
-        {
-            if (currentGameViewModel == null)
-            {
-                MessageBox.Show("There is no game in progress to save..", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            var state = currentGameViewModel.GetCurrentGameState();
-            try
-            {
-                GameStateServices.SaveGame(state);
-                MessageBox.Show("Game saved successfully.", "Save Game", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error saving: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-        private void ShowStatistics()
-        {
-           StatisticsWindow statisticsWindow = new StatisticsWindow();
-            statisticsWindow.Show();
-        }
-
         private void ShowAboutInfo()
         {
             MessageBox.Show("Memory Game\nDeveloper: Onet Rares-Nicolae\nEmail: rares.onet@student.com\nGroup: 10LF233\nSpecialization: Computer Science", "About", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void BackToLogin()
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+            Application.Current.Windows.OfType<MenuWindow>().FirstOrDefault()?.Close();
         }
 
         private void ExitApplication()
         {
             Application.Current.Shutdown();
         }
+        
     }
 }

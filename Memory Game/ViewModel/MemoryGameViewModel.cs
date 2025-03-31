@@ -78,25 +78,38 @@ namespace Memory_Game.ViewModel
             StartTimer();
         }
 
+        public void StopTimer()
+        {
+            if (_timer != null)
+            {
+                _timer.Stop();
+                _timer.Tick -= Timer_Tick; 
+                _timer = null;
+            }
+        }
+
+
         private void StartTimer()
         {
             _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-            _timer.Tick += (s, e) =>
-            {
-                _secondsElapsed++;
-                OnPropertyChanged(nameof(TimerText));
-
-                if (_secondsElapsed >= _timeLimit)
-                {
-                    _timer.Stop();
-                    PlayerStatisticsService.UpdateStatistics(_username, won: false);
-                    MessageBox.Show("Time is up! You lost the game..", "Game Over", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    Application.Current.Windows.OfType<MemoryGameWindow>().FirstOrDefault()?.Close();
-
-                }
-            };
+            _timer.Tick += Timer_Tick;
             _timer.Start();
         }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            _secondsElapsed++;
+            OnPropertyChanged(nameof(TimerText));
+
+            if (_secondsElapsed >= _timeLimit)
+            {
+                StopTimer(); 
+                PlayerStatisticsService.UpdateStatistics(_username, won: false);
+                MessageBox.Show("Time is up! You lost the game.", "Game Over", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Application.Current.Windows.OfType<MemoryGameWindow>().FirstOrDefault()?.Close();
+            }
+        }
+
 
 
         private void LoadCards()

@@ -13,6 +13,7 @@
             <Button Content="Standard (4x4)" Width="220" Height="50" Command="{Binding StandardGameCommand}" FontSize="16" FontWeight="Bold"/>
             <Button Content="Custom..." Width="220" Height="50" Command="{Binding CustomGameCommand}" FontSize="16" FontWeight="Bold"/>
             <Button Content="About" Width="220" Height="50" Command="{Binding AboutCommand}" FontSize="16" FontWeight="Bold"/>
+            <Button Content="BackToLogin" Width="220" Height="50" Command="{Binding BackToLoginCommand}" FontSize="16" FontWeight="Bold"/>
             <Button Content="Exit" Width="220" Height="50" Command="{Binding ExitCommand}" FontSize="16" FontWeight="Bold"/>
         </StackPanel>
     </Grid>

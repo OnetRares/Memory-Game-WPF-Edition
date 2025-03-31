@@ -32,7 +32,6 @@ namespace Memory_Game.ViewModel
         public ICommand PlayCommand { get; }
         public ICommand DeleteUserCommand { get; }
         public ICommand CreateUserCommand { get; }
-
         public ICommand ExitCommand { get; }
 
         public ICommand NavigateLeftCommand { get; }
@@ -53,51 +52,12 @@ namespace Memory_Game.ViewModel
 
         }
 
-        private void ExecuteExit()
-        {
-            Application.Current.Shutdown();
-        }
-        private void ExecuteNavigateLeft()
-        {
-            int currentIndex = Users.IndexOf(SelectedUser);
-            if (currentIndex > 0)
-            {
-                SelectedUser = Users[currentIndex - 1];
-            }
-        }
-
-        private void ExecuteNavigateRight()
-        {
-            int currentIndex = Users.IndexOf(SelectedUser);
-            if (currentIndex < Users.Count - 1)
-            {
-                SelectedUser = Users[currentIndex + 1];
-            }
-        }
-
-        private void LoadUsers()
-        {
-            if (File.Exists(UserFilePath))
-            {
-                var lines = File.ReadAllLines(UserFilePath);
-                foreach (var line in lines)
-                {
-                    var parts = line.Split('|');
-                    if (parts.Length == 2)
-                    {
-                        Users.Add(new UserModel { Name = parts[0], ImagePath = parts[1] });
-                    }
-                }
-            }
-        }
-
         private void ExecutePlay()
         {
             MenuWindow menuWindow = new MenuWindow(SelectedUser.Name);
             menuWindow.Show();
             Application.Current.Windows.OfType<MainWindow>().FirstOrDefault()?.Close();
         }
-
         private void ExecuteDeleteUser()
         {
             if (SelectedUser != null)
@@ -145,6 +105,44 @@ namespace Memory_Game.ViewModel
                 }
             }
         }
+        private void ExecuteExit()
+        {
+            Application.Current.Shutdown();
+        }
+        private void ExecuteNavigateLeft()
+        {
+            int currentIndex = Users.IndexOf(SelectedUser);
+            if (currentIndex > 0)
+            {
+                SelectedUser = Users[currentIndex - 1];
+            }
+        }
+
+        private void ExecuteNavigateRight()
+        {
+            int currentIndex = Users.IndexOf(SelectedUser);
+            if (currentIndex < Users.Count - 1)
+            {
+                SelectedUser = Users[currentIndex + 1];
+            }
+        }
+
+        private void LoadUsers()
+        {
+            if (File.Exists(UserFilePath))
+            {
+                var lines = File.ReadAllLines(UserFilePath);
+                foreach (var line in lines)
+                {
+                    var parts = line.Split('|');
+                    if (parts.Length == 2)
+                    {
+                        Users.Add(new UserModel { Name = parts[0], ImagePath = parts[1] });
+                    }
+                }
+            }
+        }
+
 
         public void SaveUsers()
         {
