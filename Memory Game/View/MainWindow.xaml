@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Memory_Game"
         mc:Ignorable="d"
-        Title="Memory Game - Login" Height="500" Width="800" Background="#17202A">
+        Title="Memory Game - Login" Height="500" Width="800" Background="#17202A"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

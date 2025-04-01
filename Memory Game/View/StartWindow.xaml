@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Memory_Game"
         mc:Ignorable="d"
         Title="StartWindow" Height="700" Width="800"
-        Background="{Binding BackgroundBrush}">
+        Background="{Binding BackgroundBrush}"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid Margin="0,0,0,-6">
         <Button Content="" 
                 Command="{Binding StartGameCommand}"

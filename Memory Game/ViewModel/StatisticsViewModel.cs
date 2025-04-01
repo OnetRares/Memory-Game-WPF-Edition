@@ -27,15 +27,16 @@ namespace Memory_Game.ViewModel
         {
             var stats = PlayerStatisticsService.LoadStatistics();
             PlayerStatistics = new ObservableCollection<PlayerStatisticsModel>(stats.OrderBy(s => s.Username));
+            CloseWindowCommand = new RelayCommand(CloseWindowExecute);
+           
+        }
 
-            CloseWindowCommand = new RelayCommand<Window>(window =>
-            {
-                window?.Close();
-            });
+        private void CloseWindowExecute()
+        {
+            Application.Current.Windows.OfType<StatisticsWindow>().FirstOrDefault()?.Close();
         }
 
 
 
-        
     }
 }

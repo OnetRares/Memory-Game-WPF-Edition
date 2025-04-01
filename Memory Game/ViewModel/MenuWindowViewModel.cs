@@ -48,28 +48,33 @@ namespace Memory_Game.ViewModel
 
         private void OpenCategorySelection()
         {
-            
-            string[] categories = { "Animals", "Cars", "Cartoons", "Pony"};
+            var categoryWindow = new CategoryWindow();
+            var viewModel = categoryWindow.DataContext as CategoryViewModel;
 
-           
-            string categoryPrompt = "Choose from: " + string.Join(", ", categories);
-
-
-            string input = Microsoft.VisualBasic.Interaction.InputBox(categoryPrompt, "Select Category", "");
-
-        
-            if (!string.IsNullOrWhiteSpace(input))
+          
+            viewModel.ConfirmAction = () =>
             {
-                selectedCategory = input;
-                MessageBox.Show($"Selected category: {selectedCategory}", "Category", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
+                if (viewModel.SelectedCategory != null)
+                {
+                    selectedCategory = viewModel.SelectedCategory.Name;
+                    MessageBox.Show($"Selected category: {selectedCategory}", "Category", MessageBoxButton.OK, MessageBoxImage.Information);
+                    categoryWindow.Close();
+                }
+                else
+                {
+                    MessageBox.Show("You must select a category.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
+
+   
+            viewModel.CancelAction = () =>
             {
                 MessageBox.Show("You must select a category.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+                categoryWindow.Close();
+            };
+
+            categoryWindow.ShowDialog();
         }
-
-
         private void StartNewGame()
         {
             if (string.IsNullOrEmpty(selectedCategory) || string.IsNullOrEmpty(selectedGameMode))
@@ -78,27 +83,44 @@ namespace Memory_Game.ViewModel
                 return;
             }
 
-            int timeLimit = 60;
-            string input = Microsoft.VisualBasic.Interaction.InputBox("Enter the game time limit (in seconds):", "Time Limit", "60");
+            var timeWindow = new TimeWindow();
+            var timeViewModel = timeWindow.DataContext as TimeViewModel;
 
-            if (int.TryParse(input, out int parsedTimeLimit) && parsedTimeLimit > 0)
+            if (timeViewModel == null)
             {
-                timeLimit = parsedTimeLimit;
-            }
-            else
-            {
-                MessageBox.Show("The entered time is not valid. The game will start with the default time limit of 60 seconds.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Error loading time window.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
 
-            MessageBox.Show($"The game will start with:\nCategory: '{selectedCategory}'\nMode: '{selectedGameMode}'\nBoard size: {selectedColumns}x{selectedRows}\nTime limit: {timeLimit} seconds.",
-                "Starting Game", MessageBoxButton.OK, MessageBoxImage.Information);
+          
+            timeViewModel.ConfirmAction = () =>
+            {
+                int timeLimit = timeViewModel.TimeLimit;
 
-            currentGameViewModel = new MemoryGameViewModel(username, timeLimit, selectedCategory, selectedColumns, selectedRows);
-            MemoryGameWindow memoryGameWindow = new MemoryGameWindow(currentGameViewModel);
+            
+                if (timeLimit > 0)
+                {
+                    
+                   
+                    currentGameViewModel = new MemoryGameViewModel(username, timeLimit, selectedCategory, selectedColumns, selectedRows);
+                    MemoryGameWindow memoryGameWindow = new MemoryGameWindow(currentGameViewModel);
 
-            memoryGameWindow.Closed += (s, e) => currentGameViewModel.StopTimer();
+                    memoryGameWindow.Closed += (s, e) => currentGameViewModel.StopTimer();
+                    memoryGameWindow.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Invalid time limit entered. Defaulting to 60 seconds.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                timeWindow.Close();
+            };
 
-            memoryGameWindow.Show();
+            timeViewModel.CancelAction = () =>
+            {
+                timeWindow.Close();
+            };
+
+            timeWindow.ShowDialog();
         }
 
 
@@ -165,22 +187,20 @@ namespace Memory_Game.ViewModel
         private void SelectCustomGame()
         {
             selectedGameMode = "Custom";
-            string inputCols = Microsoft.VisualBasic.Interaction.InputBox("Enter the number of cols (between 2 and 6):", "Board Dimensions", "4");
-            string inputRows = Microsoft.VisualBasic.Interaction.InputBox("Enter the number of rows (between 2 and 6):", "Board Dimensions", "4");
 
-            if (int.TryParse(inputRows, out int rows) &&
-                int.TryParse(inputCols, out int cols) &&
-                rows >= 2 && rows <= 6 &&
-                cols >= 2 && cols <= 6 &&
-                rows * cols % 2 == 0)
+           
+            BoardDimensionWindow boardWindow = new BoardDimensionWindow();
+            if (boardWindow.ShowDialog() == true)
             {
-                selectedRows = rows;
-                selectedColumns = cols;
-                MessageBox.Show($"Custom mode selected: The board will be {cols}x{rows}.", "Custom Game", MessageBoxButton.OK, MessageBoxImage.Information);
+               
+                var viewModel = boardWindow.DataContext as BoardDimensionsViewModel;
+                selectedRows = viewModel.SelectedRow;
+                selectedColumns = viewModel.SelectedColumn;
+                MessageBox.Show($"Custom mode selected: The board will be {selectedColumns}x{selectedRows}.", "Custom Game", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show("Invalid dimensions entered. Please ensure that the number of rows and columns is between 2 and 6 and that their product is even.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Dimensiunile tablei nu au fost setate.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 selectedGameMode = null;
             }
         }
