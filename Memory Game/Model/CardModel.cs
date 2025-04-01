@@ -18,7 +18,8 @@ namespace Memory_Game.Model
          
             public bool IsMatched { get; set; }
 
-            public string BackImagePath { get; set; } = "Images/back.jpg";
+
+            public string BackImagePath { get; set; }
 
           
             public string DisplayImage => IsRevealed || IsMatched ? ImagePath : BackImagePath;

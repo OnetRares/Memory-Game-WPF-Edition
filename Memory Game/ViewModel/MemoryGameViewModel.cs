@@ -3,6 +3,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -114,35 +115,35 @@ namespace Memory_Game.ViewModel
 
         private void LoadCards()
         {
-        
-            string imagesFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", _category);
-            if (!Directory.Exists(imagesFolder))
+
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            string imagesFolder = Path.Combine(baseDir, "..", "..", "..", "Resources", _category);
+            imagesFolder = Path.GetFullPath(imagesFolder); 
+
+            List<string> imageFiles = new List<string>();
+
+            for (int i = 1; i <= _rows * _columns / 2; i++)
             {
-                throw new DirectoryNotFoundException($"Folder {imagesFolder} not found.");
+                string imgPath = $"{imagesFolder}\\img{i}.jpg";
+                imageFiles.Add(imgPath);
             }
 
-           
-            int pairs = _rows * _columns / 2;
-
-            var imageFiles = Directory.GetFiles(imagesFolder, "*.jpg");
-            if (imageFiles.Length < pairs)
+            if (imageFiles.Count < (_rows * _columns / 2))
             {
-                throw new Exception($"There are not enough images in category '{_category}'. At least {pairs} images are required..");
+                throw new Exception($"There are not enough images in category '{_category}'.");
             }
 
-            var selectedImages = imageFiles.Take(pairs).ToList();
+            var selectedImages = imageFiles.Take(_rows * _columns / 2).ToList();
 
-       
             var cardList = selectedImages.SelectMany(img =>
             {
                 return new[]
                 {
-                    new CardModel { ImagePath = img },
-                    new CardModel { ImagePath = img }
-                };
+            new CardModel { ImagePath = img },
+            new CardModel { ImagePath = img }
+        };
             }).ToList();
 
-           
             var rnd = new Random();
             cardList = cardList.OrderBy(x => rnd.Next()).ToList();
 

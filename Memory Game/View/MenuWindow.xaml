@@ -1,20 +1,39 @@
 ﻿<Window x:Class="Memory_Game.MenuWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Memory Game" Height="600" Width="800" Background="#2C3E50">
+        Title="Memory Game - Menu" Height="750" Width="850" Background="#17202A">
+
     <Grid>
-        <TextBlock Text="{Binding WelcomeMessage}" FontSize="20" FontWeight="Bold" Foreground="White" Margin="10"/>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Content="Category" Width="220" Height="50" Command="{Binding CategoryCommand}" FontSize="16" FontWeight="Bold"/>
-            <Button Content="New Game" Width="220" Height="50" Command="{Binding NewGameCommand}" FontSize="16" FontWeight="Bold"/>
-            <Button Content="Open Game" Width="220" Height="50" Command="{Binding OpenGameCommand}" FontSize="16" FontWeight="Bold"/>
-            <Button Content="Save Game" Width="220" Height="50" Command="{Binding SaveGameCommand}" FontSize="16" FontWeight="Bold"/>
-            <Button Content="Statistics" Width="220" Height="50" Command="{Binding StatisticsCommand}" FontSize="16" FontWeight="Bold"/>
-            <Button Content="Standard (4x4)" Width="220" Height="50" Command="{Binding StandardGameCommand}" FontSize="16" FontWeight="Bold"/>
-            <Button Content="Custom..." Width="220" Height="50" Command="{Binding CustomGameCommand}" FontSize="16" FontWeight="Bold"/>
-            <Button Content="About" Width="220" Height="50" Command="{Binding AboutCommand}" FontSize="16" FontWeight="Bold"/>
-            <Button Content="BackToLogin" Width="220" Height="50" Command="{Binding BackToLoginCommand}" FontSize="16" FontWeight="Bold"/>
-            <Button Content="Exit" Width="220" Height="50" Command="{Binding ExitCommand}" FontSize="16" FontWeight="Bold"/>
-        </StackPanel>
+       
+        <Border Background="#1C2833" CornerRadius="15" BorderBrush="#F1C40F" BorderThickness="2" Padding="20" Margin="20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Titlu mutat la stânga -->
+                <TextBlock Text="{Binding WelcomeMessage}" 
+                           FontSize="28" 
+                           FontWeight="Bold" 
+                           Foreground="#F1C40F" 
+                           HorizontalAlignment="Left"
+                           Margin="20,10,0,10"/>
+
+                <!-- Meniu de butoane ridicat mai sus -->
+                <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,-50,0,0">
+                    <Button Content="Category" Command="{Binding CategoryCommand}" Style="{StaticResource MenuButtonStyle}"/>
+                    <Button Content="New Game" Command="{Binding NewGameCommand}" Style="{StaticResource MenuButtonStyle}"/>
+                    <Button Content="Open Game" Command="{Binding OpenGameCommand}" Style="{StaticResource MenuButtonStyle}"/>
+                    <Button Content="Save Game" Command="{Binding SaveGameCommand}" Style="{StaticResource MenuButtonStyle}"/>
+                    <Button Content="Statistics" Command="{Binding StatisticsCommand}" Style="{StaticResource MenuButtonStyle}"/>
+                    <Button Content="Standard (4x4)" Command="{Binding StandardGameCommand}" Style="{StaticResource MenuButtonStyle}"/>
+                    <Button Content="Custom..." Command="{Binding CustomGameCommand}" Style="{StaticResource MenuButtonStyle}"/>
+                    <Button Content="About" Command="{Binding AboutCommand}" Style="{StaticResource MenuButtonStyle}"/>
+                    <Button Content="Back to Login" Command="{Binding BackToLoginCommand}" Style="{StaticResource MenuButtonStyle}"/>
+                    <Button Content="Exit" Command="{Binding ExitCommand}" Background="#E74C3C" Foreground="White" FontWeight="Bold"/>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </Window>

@@ -5,53 +5,61 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Memory_Game"
         mc:Ignorable="d"
-        Title="Memory Game - Login" Height="500" Width="800" Background="#2C3E50">
+        Title="Memory Game - Login" Height="500" Width="800" Background="#17202A">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Welcome, Enjoy this game!" FontSize="26" FontWeight="Bold" Foreground="White"
-                   HorizontalAlignment="Center" Margin="0,20,0,10"/>
 
+        <TextBlock Text="Welcome, Enjoy this game!" FontSize="32" FontWeight="Bold" Foreground="#F1C40F"
+                   HorizontalAlignment="Center" Margin="0,10,0,10" Grid.Row="0"/>
+
+     
         <Grid Grid.Row="1" Margin="20">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
-            <ListBox x:Name="UserListBox" Grid.Column="0" Background="#34495E" Foreground="White"
+            
+            <ListBox x:Name="UserListBox" Grid.Column="0" Background="#1C2833" Foreground="#FDFEFE"
                      ItemsSource="{Binding Users}" DisplayMemberPath="Name"
-                     SelectedItem="{Binding SelectedUser, Mode=TwoWay}"/>
+                     SelectedItem="{Binding SelectedUser, Mode=TwoWay}" 
+                     BorderBrush="#F1C40F" BorderThickness="1" Padding="10"/>
 
-            <Border Grid.Column="1" BorderBrush="White" BorderThickness="2" CornerRadius="10" Padding="5">
-                <Grid>
-                    <Image Width="180" Height="180" Source="{Binding SelectedUser.ImagePath}"
-                           Stretch="UniformToFill"/>
-
-
-
-                </Grid>
+         
+            <Border Grid.Column="1" BorderBrush="#F1C40F" BorderThickness="2" CornerRadius="15" Padding="10"
+                    Background="#273746" Margin="10">
+                <StackPanel HorizontalAlignment="Center">
+                    <Image Width="200" Height="200" Source="{Binding SelectedUser.ImagePath}"
+                           Stretch="UniformToFill" Margin="0,10" Opacity="0.85"/>
+                    <TextBlock Text="{Binding SelectedUser.Name}" FontSize="20" FontWeight="Bold"
+                               Foreground="#FDFEFE" HorizontalAlignment="Center" Margin="10,5,10,0"/>
+                </StackPanel>
             </Border>
         </Grid>
 
-        <Button Content="&#x00AB;" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40"
-        Background="#2980B9" Foreground="White" FontWeight="Bold" Command="{Binding NavigateLeftCommand}" Margin="616,339,0,0" Grid.RowSpan="2" Grid.Row="1"/>
-        <Button Content="&#x00BB;" HorizontalAlignment="Right" VerticalAlignment="Top" Width="40" Height="40"
-        Background="#2980B9" Foreground="White" FontWeight="Bold" Command="{Binding NavigateRightCommand}" Margin="0,339,72,0" Grid.RowSpan="2" Grid.Row="1"/>
-        
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10,0,10">
-            <Button Content="Create User" Width="120" Height="40" Margin="10" Background="#2980B9" Foreground="White"
-            FontWeight="Bold" Command="{Binding CreateUserCommand}"/>
-            <Button Content="Delete User" Width="120" Height="40" Margin="10" Background="#E74C3C" Foreground="White"
-            FontWeight="Bold" Command="{Binding DeleteUserCommand}" IsEnabled="{Binding IsUserSelected}"/>
-            <Button Content="Play" Width="120" Height="40" Margin="10" Background="#27AE60" Foreground="White"
-            FontWeight="Bold" Command="{Binding PlayCommand}" IsEnabled="{Binding IsUserSelected}"/>
-            <Button Content="Exit" Width="120" Height="40" Margin="10" Background="#95A5A6" Foreground="White"
-            FontWeight="Bold" Command="{Binding ExitCommand}"/>
+       
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <TextBlock Text="New User Name:" VerticalAlignment="Center" Foreground="#FDFEFE" Margin="0,0,5,0"/>
+            <TextBox Width="250" Text="{Binding NewUserName, UpdateSourceTrigger=PropertyChanged}" 
+                     Background="#1C2833" Foreground="White" BorderBrush="#F1C40F"/>
+        </StackPanel>
 
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" >
+            <Button Content="Create User" Width="140" Height="45" Margin="10" Background="#F39C12" Foreground="White"
+                    FontWeight="Bold" Command="{Binding CreateUserCommand}"/>
+            <Button Content="Delete User" Width="140" Height="45" Margin="10" Background="#E74C3C" Foreground="White"
+                    FontWeight="Bold" Command="{Binding DeleteUserCommand}" IsEnabled="{Binding IsUserSelected}"/>
+            <Button Content="Play" Width="140" Height="45" Margin="10" Background="#2ECC71" Foreground="White"
+                    FontWeight="Bold" Command="{Binding PlayCommand}" IsEnabled="{Binding IsUserSelected}"/>
+            <Button Content="Exit" Width="140" Height="45" Margin="10" Background="#95A5A6" Foreground="White"
+                    FontWeight="Bold" Command="{Binding ExitCommand}"/>
+            
         </StackPanel>
     </Grid>
 </Window>

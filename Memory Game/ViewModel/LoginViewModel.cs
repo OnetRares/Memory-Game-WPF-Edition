@@ -1,12 +1,10 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Input;
 using System.IO;
+using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using Memory_Game.Model;
 
 namespace Memory_Game.ViewModel
@@ -15,8 +13,10 @@ namespace Memory_Game.ViewModel
     {
         private const string UserFilePath = "users.txt";
         private UserModel _selectedUser;
+        private string _newUserName;
 
         public ObservableCollection<UserModel> Users { get; set; } = new ObservableCollection<UserModel>();
+
         public UserModel SelectedUser
         {
             get => _selectedUser;
@@ -29,15 +29,22 @@ namespace Memory_Game.ViewModel
         }
         public bool IsUserSelected => SelectedUser != null;
 
+        public string NewUserName
+        {
+            get => _newUserName;
+            set
+            {
+                _newUserName = value;
+                OnPropertyChanged(nameof(NewUserName));
+            }
+        }
+
         public ICommand PlayCommand { get; }
         public ICommand DeleteUserCommand { get; }
         public ICommand CreateUserCommand { get; }
         public ICommand ExitCommand { get; }
-
         public ICommand NavigateLeftCommand { get; }
         public ICommand NavigateRightCommand { get; }
-
-        
 
         public LoginViewModel()
         {
@@ -49,7 +56,6 @@ namespace Memory_Game.ViewModel
             ExitCommand = new RelayCommand(ExecuteExit);
             NavigateLeftCommand = new RelayCommand(ExecuteNavigateLeft, () => Users.Count > 1);
             NavigateRightCommand = new RelayCommand(ExecuteNavigateRight, () => Users.Count > 1);
-
         }
 
         private void ExecutePlay()
@@ -58,6 +64,7 @@ namespace Memory_Game.ViewModel
             menuWindow.Show();
             Application.Current.Windows.OfType<MainWindow>().FirstOrDefault()?.Close();
         }
+
         private void ExecuteDeleteUser()
         {
             if (SelectedUser != null)
@@ -79,36 +86,58 @@ namespace Memory_Game.ViewModel
                         MessageBox.Show($"Error deleting user folder: {ex.Message}");
                     }
                 }
-
-                
             }
         }
 
         private void ExecuteCreateUser()
         {
+            if (string.IsNullOrWhiteSpace(NewUserName))
+            {
+                MessageBox.Show("Please enter a valid username.");
+                return;
+            }
+
+            if (Users.Any(u => u.Name.Equals(NewUserName, StringComparison.OrdinalIgnoreCase)))
+            {
+                MessageBox.Show("This username already exists. Please choose another one.");
+                return;
+            }
+
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            string profileFolder = Path.Combine(baseDir, "..", "..", "..", "Resources", "profile");
+            profileFolder = Path.GetFullPath(profileFolder);
+
+            if (!Directory.Exists(profileFolder))
+            {
+                MessageBox.Show($"Profile folder not found: {profileFolder}");
+                return;
+            }
+
             var dialog = new OpenFileDialog
             {
-                Title = "Select Image",
+                Title = "Select Image from Profile Folder",
+                InitialDirectory = profileFolder, 
                 Filter = "Image Files|*.jpg;*.png;*.gif"
             };
 
             if (dialog.ShowDialog() == true)
             {
-                string imagePath = dialog.FileName;
-                string userName = Path.GetFileNameWithoutExtension(imagePath);
+                string selectedImagePath = dialog.FileName;
 
-                if (!Users.Any(u => u.Name == userName))
-                {
-                    var newUser = new UserModel { Name = userName, ImagePath = imagePath };
-                    Users.Add(newUser);
-                    SaveUsers();
-                }
+                var newUser = new UserModel { Name = NewUserName, ImagePath = selectedImagePath };
+                Users.Add(newUser);
+                SaveUsers();
+
+                NewUserName = string.Empty;
             }
         }
+
+
         private void ExecuteExit()
         {
             Application.Current.Shutdown();
         }
+
         private void ExecuteNavigateLeft()
         {
             int currentIndex = Users.IndexOf(SelectedUser);
@@ -142,7 +171,6 @@ namespace Memory_Game.ViewModel
                 }
             }
         }
-
 
         public void SaveUsers()
         {

@@ -2,21 +2,21 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Memory_Game.ViewModel"
-        Title="Statisticile Jucătorilor" Height="500" Width="600"
+        Title="Statisticile Jucătorilor" Height="550" Width="650"
         WindowStartupLocation="CenterScreen"
-        Background="#2C3E50"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+        Background="#17202A">
 
     <Window.InputBindings>
-        <KeyBinding Key="Escape" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
+        <KeyBinding Key="Escape" Command="{Binding CloseWindowCommand}" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
     </Window.InputBindings>
 
     <Window.Resources>
         <Style x:Key="HeaderTextStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="26"/>
+            <Setter Property="FontSize" Value="28"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Foreground" Value="#F1C40F"/>
+            <Setter Property="Margin" Value="10,0,0,20"/>
         </Style>
 
         <Style x:Key="ItemTextStyle" TargetType="TextBlock">
@@ -24,30 +24,34 @@
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
-          
         </Style>
     </Window.Resources>
 
-    <Border CornerRadius="10" BorderBrush="#BDC3C7" BorderThickness="2" Padding="15" Background="#2C3E50">
+    <Border CornerRadius="15" BorderBrush="#F1C40F" BorderThickness="2" Padding="20" Background="#1C2833">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
+           
+            <TextBlock Text="Player Statistics" Style="{StaticResource HeaderTextStyle}" HorizontalAlignment="Left"/>
 
-            <TextBlock Text="Player Statistics" Style="{StaticResource HeaderTextStyle}" HorizontalAlignment="Center"/>
-
-            
-            <ListBox ItemsSource="{Binding PlayerStatistics}" Grid.Row="1" Margin="10" Background="#2C3E50" BorderThickness="1" BorderBrush="#BDC3C7">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Border CornerRadius="5" Background="#ECF0F1" Padding="12" Margin="6" BorderBrush="#BDC3C7" BorderThickness="1">
-                            <TextBlock Text="{Binding}" Style="{StaticResource ItemTextStyle}" TextWrapping="Wrap"/>
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+          
+            <Border Grid.Row="1" BorderBrush="#F1C40F" BorderThickness="2" CornerRadius="10" 
+                    Background="#2C3E50" Padding="10" Margin="0,10">
+                <ListBox ItemsSource="{Binding PlayerStatistics}" Background="#2C3E50" BorderThickness="0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border CornerRadius="5" Background="#ECF0F1" Padding="12" Margin="6" 
+                                    BorderBrush="#BDC3C7" BorderThickness="1">
+                                <TextBlock Text="{Binding}" Style="{StaticResource ItemTextStyle}" TextWrapping="Wrap"/>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
         </Grid>
     </Border>
 </Window>

@@ -1,0 +1,29 @@
+﻿<Window x:Class="Memory_Game.StartWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Memory_Game"
+        mc:Ignorable="d"
+        Title="StartWindow" Height="700" Width="800"
+        Background="{Binding BackgroundBrush}">
+    <Grid Margin="0,0,0,-6">
+        <Button Content="" 
+                Command="{Binding StartGameCommand}"
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Top" 
+                Margin="0,583,0,0" 
+                Height="80" 
+                Width="424"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Foreground="Transparent"
+                IsHitTestVisible="True"   
+            Focusable="False"
+     
+            Cursor="None"
+       
+            Opacity="0" />
+         
+    </Grid>
+</Window>

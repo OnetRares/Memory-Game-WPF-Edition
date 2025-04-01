@@ -49,4 +49,5 @@ namespace Memory_Game
             remove { CommandManager.RequerySuggested -= value; }
         }
     }
+    
 }
