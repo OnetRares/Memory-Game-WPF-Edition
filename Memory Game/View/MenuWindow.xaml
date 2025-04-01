@@ -12,7 +12,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <!-- Titlu mutat la stânga -->
+            
                 <TextBlock Text="{Binding WelcomeMessage}" 
                            FontSize="28" 
                            FontWeight="Bold" 
@@ -20,7 +20,7 @@
                            HorizontalAlignment="Left"
                            Margin="20,10,0,10"/>
 
-                <!-- Meniu de butoane ridicat mai sus -->
+                
                 <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,-50,0,0">
                     <Button Content="Category" Command="{Binding CategoryCommand}" Style="{StaticResource MenuButtonStyle}"/>
                     <Button Content="New Game" Command="{Binding NewGameCommand}" Style="{StaticResource MenuButtonStyle}"/>

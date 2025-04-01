@@ -48,7 +48,16 @@ namespace Memory_Game.ViewModel
 
         private void OpenCategorySelection()
         {
-            string input = Microsoft.VisualBasic.Interaction.InputBox("Enter the image category name:", "Select Category", "Default");
+            
+            string[] categories = { "Animals", "Cars", "Cartoons", "Pony"};
+
+           
+            string categoryPrompt = "Choose from: " + string.Join(", ", categories);
+
+
+            string input = Microsoft.VisualBasic.Interaction.InputBox(categoryPrompt, "Select Category", "");
+
+        
             if (!string.IsNullOrWhiteSpace(input))
             {
                 selectedCategory = input;
@@ -81,10 +90,10 @@ namespace Memory_Game.ViewModel
                 MessageBox.Show("The entered time is not valid. The game will start with the default time limit of 60 seconds.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            MessageBox.Show($"The game will start with:\nCategory: '{selectedCategory}'\nMode: '{selectedGameMode}'\nBoard size: {selectedRows}x{selectedColumns}\nTime limit: {timeLimit} seconds.",
+            MessageBox.Show($"The game will start with:\nCategory: '{selectedCategory}'\nMode: '{selectedGameMode}'\nBoard size: {selectedColumns}x{selectedRows}\nTime limit: {timeLimit} seconds.",
                 "Starting Game", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            currentGameViewModel = new MemoryGameViewModel(username, timeLimit, selectedCategory, selectedRows, selectedColumns);
+            currentGameViewModel = new MemoryGameViewModel(username, timeLimit, selectedCategory, selectedColumns, selectedRows);
             MemoryGameWindow memoryGameWindow = new MemoryGameWindow(currentGameViewModel);
 
             memoryGameWindow.Closed += (s, e) => currentGameViewModel.StopTimer();
@@ -156,8 +165,8 @@ namespace Memory_Game.ViewModel
         private void SelectCustomGame()
         {
             selectedGameMode = "Custom";
+            string inputCols = Microsoft.VisualBasic.Interaction.InputBox("Enter the number of cols (between 2 and 6):", "Board Dimensions", "4");
             string inputRows = Microsoft.VisualBasic.Interaction.InputBox("Enter the number of rows (between 2 and 6):", "Board Dimensions", "4");
-            string inputCols = Microsoft.VisualBasic.Interaction.InputBox("Enter the number of columns (between 2 and 6):", "Board Dimensions", "4");
 
             if (int.TryParse(inputRows, out int rows) &&
                 int.TryParse(inputCols, out int cols) &&
@@ -167,7 +176,7 @@ namespace Memory_Game.ViewModel
             {
                 selectedRows = rows;
                 selectedColumns = cols;
-                MessageBox.Show($"Custom mode selected: The board will be {rows}x{cols}.", "Custom Game", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Custom mode selected: The board will be {cols}x{rows}.", "Custom Game", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
