@@ -57,19 +57,19 @@ namespace Memory_Game.ViewModel
                 if (viewModel.SelectedCategory != null)
                 {
                     selectedCategory = viewModel.SelectedCategory.Name;
-                    MessageBox.Show($"Selected category: {selectedCategory}", "Category", MessageBoxButton.OK, MessageBoxImage.Information);
+                   CustomMessageViewModel.ShowSelectedCategoryMessage(selectedCategory);
                     categoryWindow.Close();
                 }
                 else
                 {
-                    MessageBox.Show("You must select a category.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    CustomMessageViewModel.ShowSelectedCategoryErrorMessage();
                 }
             };
 
    
             viewModel.CancelAction = () =>
             {
-                MessageBox.Show("You must select a category.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageViewModel.ShowSelectedCategoryErrorMessage();
                 categoryWindow.Close();
             };
 
@@ -79,19 +79,12 @@ namespace Memory_Game.ViewModel
         {
             if (string.IsNullOrEmpty(selectedCategory) || string.IsNullOrEmpty(selectedGameMode))
             {
-                MessageBox.Show("Please select an image category and game mode (Standard or Custom) before starting.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageViewModel.ShowStartNewGameErrorMessage();
                 return;
             }
 
             var timeWindow = new TimeWindow();
             var timeViewModel = timeWindow.DataContext as TimeViewModel;
-
-            if (timeViewModel == null)
-            {
-                MessageBox.Show("Error loading time window.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
           
             timeViewModel.ConfirmAction = () =>
             {
@@ -107,10 +100,6 @@ namespace Memory_Game.ViewModel
 
                     memoryGameWindow.Closed += (s, e) => currentGameViewModel.StopTimer();
                     memoryGameWindow.Show();
-                }
-                else
-                {
-                    MessageBox.Show("Invalid time limit entered. Defaulting to 60 seconds.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 timeWindow.Close();
             };
@@ -155,7 +144,7 @@ namespace Memory_Game.ViewModel
         {
             if (currentGameViewModel == null)
             {
-                MessageBox.Show("There is no game in progress to save..", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageViewModel.ShowCurrentSaveGameErrorMessage();
                 return;
             }
 
@@ -163,11 +152,11 @@ namespace Memory_Game.ViewModel
             try
             {
                 GameStateServices.SaveGame(state);
-                MessageBox.Show("Game saved successfully.", "Save Game", MessageBoxButton.OK, MessageBoxImage.Information);
+                CustomMessageViewModel.ShowSaveGameMessage();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error saving: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageViewModel.ShowSaveErrorMessage(ex);
             }
         }
         private void ShowStatistics()
@@ -181,7 +170,7 @@ namespace Memory_Game.ViewModel
             selectedGameMode = "Standard";
             selectedRows = 4;
             selectedColumns = 4;
-            MessageBox.Show("Standard mode selected: The board will be 4x4.", "Standard Game", MessageBoxButton.OK, MessageBoxImage.Information);
+            CustomMessageViewModel.ShowStandardGameMessage();
         }
 
         private void SelectCustomGame()
@@ -196,20 +185,20 @@ namespace Memory_Game.ViewModel
                 var viewModel = boardWindow.DataContext as BoardDimensionsViewModel;
                 selectedRows = viewModel.SelectedRow;
                 selectedColumns = viewModel.SelectedColumn;
-                MessageBox.Show($"Custom mode selected: The board will be {selectedColumns}x{selectedRows}.", "Custom Game", MessageBoxButton.OK, MessageBoxImage.Information);
+                CustomMessageViewModel.ShowCustomGameMessage(selectedColumns,selectedRows);
             }
             else
             {
-                MessageBox.Show("Dimensiunile tablei nu au fost setate.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageViewModel.ShowCustomErrorGameMessage();
                 selectedGameMode = null;
             }
         }
         private void ShowAboutInfo()
         {
-            MessageBox.Show("Memory Game\nDeveloper: Onet Rares-Nicolae\nEmail: rares.onet@student.com\nGroup: 10LF233\nSpecialization: Computer Science", "About", MessageBoxButton.OK, MessageBoxImage.Information);
+            CustomMessageViewModel.ShowAboutInfoMessage();
         }
 
-        private void BackToLogin()
+        private void BackToLogin()  
         {
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();

@@ -83,7 +83,7 @@ namespace Memory_Game.ViewModel
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Error deleting user folder: {ex.Message}");
+                        CustomMessageViewModel.ShowDeleteUserErrorMessage(ex);
                     }
                 }
             }
@@ -93,13 +93,13 @@ namespace Memory_Game.ViewModel
         {
             if (string.IsNullOrWhiteSpace(NewUserName))
             {
-                MessageBox.Show("Please enter a valid username.");
+                CustomMessageViewModel.ShowInvalidUserMessage();
                 return;
             }
 
             if (Users.Any(u => u.Name.Equals(NewUserName, StringComparison.OrdinalIgnoreCase)))
             {
-                MessageBox.Show("This username already exists. Please choose another one.");
+                CustomMessageViewModel.ShowUserAlreadyExistMessage();
                 return;
             }
 
@@ -109,7 +109,7 @@ namespace Memory_Game.ViewModel
 
             if (!Directory.Exists(profileFolder))
             {
-                MessageBox.Show($"Profile folder not found: {profileFolder}");
+                CustomMessageViewModel.ShowProfileFolderErrorMessage(profileFolder);
                 return;
             }
 
@@ -186,7 +186,7 @@ namespace Memory_Game.ViewModel
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error saving users: {ex.Message}");
+                CustomMessageViewModel.ShowErrorSavingUsersMessage(ex);
             }
         }
     }

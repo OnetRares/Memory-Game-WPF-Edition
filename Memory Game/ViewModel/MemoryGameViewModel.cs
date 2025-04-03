@@ -106,7 +106,7 @@ namespace Memory_Game.ViewModel
             {
                 StopTimer(); 
                 PlayerStatisticsService.UpdateStatistics(_username, won: false);
-                MessageBox.Show("Time is up! You lost the game.", "Game Over", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageViewModel.ShowLoseGameMessage();
                 Application.Current.Windows.OfType<MemoryGameWindow>().FirstOrDefault()?.Close();
             }
         }
@@ -210,7 +210,7 @@ namespace Memory_Game.ViewModel
             {
                 _timer.Stop();
                 PlayerStatisticsService.UpdateStatistics(_username, won: true);
-                MessageBox.Show($"Congratulations {_username} ! You finished the game in {TimerText}", "Game Over", MessageBoxButton.OK, MessageBoxImage.Information);
+                CustomMessageViewModel.ShowWinGameMessage(_username, TimerText);
                 Application.Current.Windows.OfType<MemoryGameWindow>().FirstOrDefault()?.Close();
             }
         }

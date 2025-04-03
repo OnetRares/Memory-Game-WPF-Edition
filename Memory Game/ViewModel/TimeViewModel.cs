@@ -45,18 +45,18 @@ namespace Memory_Game.ViewModel
         {
             if (TimeLimit > 0)
             {
-                MessageBox.Show($"Game will start with {TimeLimit} seconds.", "Time Set", MessageBoxButton.OK, MessageBoxImage.Information);
+                CustomMessageViewModel.ShowTimeMessage(TimeLimit);
                 ConfirmAction?.Invoke();
             }
             else
             {
-                MessageBox.Show("The entered time is not valid.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageViewModel.ShowTimeEroorMessage();
             }
         }
 
         private void CancelSelection()
         {
-            MessageBox.Show("Time limit selection canceled.", "Cancel", MessageBoxButton.OK, MessageBoxImage.Information);
+            CustomMessageViewModel.ShowTimeCancelMessage(); 
             CancelAction?.Invoke();
         }
     }

@@ -1,0 +1,35 @@
+﻿<Window x:Class="Memory_Game.CustomMessageWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Message"
+        Height="150" Width="300"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        Background="#1C2833"
+        AllowsTransparency="True">
+
+    <Border CornerRadius="10" BorderBrush="#F1C40F" BorderThickness="2" Background="#2C3E50" Padding="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="TitleTextBlock" Text="Notification"
+                       Foreground="#F1C40F" FontSize="18" FontWeight="Bold"
+                       HorizontalAlignment="Center" Margin="0,5"/>
+
+            <TextBlock x:Name="MessageTextBlock" TextWrapping="Wrap"
+                       Foreground="White" FontSize="12"
+                       HorizontalAlignment="Center" TextAlignment="Center"
+                       Grid.Row="1" Margin="10"/>
+
+            <Button Content="OK" Width="80" Height="30" Grid.Row="2"
+                    HorizontalAlignment="Center" Margin="0,10,0,0"
+                    Background="#F1C40F" Foreground="Black" FontWeight="Bold"
+                    BorderThickness="0" Command="{Binding OkCommand}"/>
+        </Grid>
+    </Border>
+</Window>

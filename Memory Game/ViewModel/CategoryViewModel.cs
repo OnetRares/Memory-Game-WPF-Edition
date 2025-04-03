@@ -40,7 +40,7 @@ namespace Memory_Game.ViewModel
             }
             else
             {
-                MessageBox.Show("You must select a category.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageViewModel.ShowSelectedCategoryErrorMessage();
             }
         }
 

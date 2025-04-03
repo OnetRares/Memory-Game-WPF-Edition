@@ -62,7 +62,7 @@ namespace Memory_Game.ViewModel
             var boardModel = new BoardDimensionsModel(SelectedRow, SelectedColumn);
             if (!boardModel.IsValid())
             {
-                MessageBox.Show("The product of rows and columns must be even.", "Invalid dimensions", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageViewModel.ShowInvalidDimensionMessage();
                 return;
             }
             ConfirmAction?.Invoke();
