@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Memory_Game
+namespace Memory_Game.ViewModel
 {
     public static class CustomMessageViewModel
     {
