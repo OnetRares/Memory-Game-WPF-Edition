@@ -144,6 +144,7 @@ namespace Memory_Game.ViewModel
         public static void ShowWinGameMessage(string username,string timer )
         {
             string message = $"Congratulations {username} ! You finished the game in {timer}";
+            Show(message, "You Won");
         }
     }
 
